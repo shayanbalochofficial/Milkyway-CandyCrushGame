@@ -146,4 +146,49 @@ function candyCrushGame() {
       }
     }
   }
+  function checkColumnForFour() {
+    for (let i = 0; i < 40; i++) {
+      const col = [i, i + width, i + 2 * width, i + 3 * width];
+      const color = squares[i].style.backgroundImage;
+      if (
+        color &&
+        col.every((idx) => squares[idx].style.backgroundImage === color)
+      ) {
+        score += 40;
+        scoreDisplay.innerHTML = score;
+        col.forEach((idx) => (squares[idx].style.backgroundImage = ""));
+      }
+    }
+  }
+
+  function checkRowForThree() {
+    for (let i = 0; i < 62; i++) {
+      if (i % width > width - 3) continue;
+      const row = [i, i + 1, i + 2];
+      const color = squares[i].style.backgroundImage;
+      if (
+        color &&
+        row.every((idx) => squares[idx].style.backgroundImage === color)
+      ) {
+        score += 30;
+        scoreDisplay.innerHTML = score;
+        row.forEach((idx) => (squares[idx].style.backgroundImage = ""));
+      }
+    }
+  }
+
+  function checkColumnForThree() {
+    for (let i = 0; i < 48; i++) {
+      const col = [i, i + width, i + 2 * width];
+      const color = squares[i].style.backgroundImage;
+      if (
+        color &&
+        col.every((idx) => squares[idx].style.backgroundImage === color)
+      ) {
+        score += 30;
+        scoreDisplay.innerHTML = score;
+        col.forEach((idx) => (squares[idx].style.backgroundImage = ""));
+      }
+    }
+  }
 }
