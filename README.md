@@ -1,5 +1,5 @@
 
-# Candy Crush Game 
+# Candy Crush Game - MilkyWay Edition
 
 A beautiful, fully functional **Candy Crush-style match-3 game** built with pure HTML, CSS, and JavaScript – no frameworks, no libraries.
 
