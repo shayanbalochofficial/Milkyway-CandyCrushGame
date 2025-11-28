@@ -36,8 +36,7 @@ Made with 🖤 by **Shayan Baloch**
 © 2025 – All Rights Reserved
 
 Demo: https://shayanbalochofficial.itch.io/candycrush  
-Repo: https://github.com/shayanbalochofficial/CandyCrushGame-Milkyway
-
+Repo: https://github.com/shayanbalochofficial/Milkyway-CandyCrushGame
 ---
 
 Feel free to fork, star, or use it as a base for your own match-3 game!
