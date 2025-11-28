@@ -146,6 +146,7 @@ function candyCrushGame() {
       }
     }
   }
+
   function checkColumnForFour() {
     for (let i = 0; i < 40; i++) {
       const col = [i, i + width, i + 2 * width, i + 3 * width];
@@ -191,4 +192,69 @@ function candyCrushGame() {
       }
     }
   }
+
+  // Game loop
+  function gameLoop() {
+    checkRowForFour();
+    checkColumnForFour();
+    checkRowForThree();
+    checkColumnForThree();
+    moveIntoSquareBelow();
+  }
+
+  // Start game (endless or timed)
+  function startGame(mode) {
+    currentMode = mode;
+    modeSelection.style.display = "none";
+    grid.style.display = "flex";
+    scoreDisplay.parentElement.style.display = "flex";
+
+    createBoard();
+    score = 0;
+    scoreDisplay.innerHTML = score;
+
+    gameInterval = setInterval(gameLoop, 100);
+
+    if (mode === "timed") {
+      timeLeft = 120;
+      updateTimerDisplay();
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          endGame();
+        }
+      }, 1000);
+    } else {
+      timerDisplay.innerHTML = "";
+    }
+  }
+
+  function updateTimerDisplay() {
+    if (currentMode === "timed") {
+      const minutes = Math.floor(timeLeft / 60);
+      const seconds = (timeLeft % 60).toString().padStart(2, "0");
+      timerDisplay.innerHTML = `Time Left: ${minutes}:${seconds}`;
+    }
+  }
+
+  function endGame() {
+    clearInterval(gameInterval);
+    squares.forEach((sq) => sq.setAttribute("draggable", false));
+    alert(`Time's Up! Final Score: ${score}`);
+  }
+
+  function changeMode() {
+    clearInterval(gameInterval);
+    if (timerInterval) clearInterval(timerInterval);
+    grid.style.display = "none";
+    scoreDisplay.parentElement.style.display = "none";
+    modeSelection.style.display = "flex";
+  }
+
+  // Event Listeners
+  endlessButton.addEventListener("click", () => startGame("endless"));
+  timedButton.addEventListener("click", () => startGame("timed"));
+  changeModeButton.addEventListener("click", changeMode);
 }
