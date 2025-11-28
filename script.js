@@ -102,4 +102,45 @@ function candyCrushGame() {
       }
     }
   }
+  function dragEnd() {
+    // Define valid moves (adjacent squares: left, up, right, down)
+    let validMoves = [
+      squareIdBeingDragged - 1,
+      squareIdBeingDragged - width,
+      squareIdBeingDragged + 1,
+      squareIdBeingDragged + width,
+    ];
+    let validMove = validMoves.includes(squareIdBeingReplaced);
+
+    if (squareIdBeingReplaced && validMove) {
+      squareIdBeingReplaced = null; // Move is valid, keep the swap
+    } else if (squareIdBeingReplaced && !validMove) {
+      // Invalid move, revert the swap
+      squares[squareIdBeingReplaced].style.backgroundImage = colorBeingReplaced;
+      squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+    } else {
+      // No drop occurred, revert to original
+      squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+    }
+  }
+
+  // Move Candies Down
+  function moveIntoSquareBelow() {
+    // Fill empty squares in the first row
+    for (let i = 0; i < width; i++) {
+      if (squares[i].style.backgroundImage === "") {
+        let randomColor = Math.floor(Math.random() * candyColors.length);
+        squares[i].style.backgroundImage = candyColors[randomColor];
+      }
+    }
+    // Move candies down to fill gaps
+    for (let i = 0; i < width * (width - 1); i++) {
+      if (squares[i + width].style.backgroundImage === "") {
+        squares[i + width].style.backgroundImage =
+          squares[i].style.backgroundImage;
+        squares[i].style.backgroundImage = "";
+      }
+    }
+  }
 }
+
