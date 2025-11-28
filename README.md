@@ -22,7 +22,7 @@ https://shayanbalochofficial.itch.io/candycrush
 ### How to run locally
 1. Clone or download the repo
 ```bash
-git clone https://github.com/shayanbalochofficial/CandyCrushGame-Milkyway.git
+git clone https://github.com/shayanbalochofficial/Milkyway-CandyCrushGame.git
 ```
 2. Open `index.html` in your browser – that’s it!
 
