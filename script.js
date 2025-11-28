@@ -62,38 +62,65 @@ function candyCrushGame() {
     });
   }
 
+  // Drag and Drop Variables
+  let colorBeingDragged,
+    colorBeingReplaced,
+    squareIdBeingDragged,
+    squareIdBeingReplaced;
+
+  function dragStart() {
+    colorBeingDragged = this.style.backgroundImage;
+    squareIdBeingDragged = parseInt(this.id);
+  }
+
+  function dragOver(e) {
+    e.preventDefault();
+  }
+  function dragEnter(e) {
+    e.preventDefault();
+  }
+  function dragLeave() {
+    /* optional visual effects can go here */
+  }
+
+  function dragDrop() {
+    colorBeingReplaced = this.style.backgroundImage;
+    squareIdBeingReplaced = parseInt(this.id);
+
+    this.style.backgroundImage = colorBeingDragged;
+    squares[squareIdBeingDragged].style.backgroundImage = colorBeingReplaced;
+  }
+
   function dragEnd() {
-    // Define valid moves (adjacent squares: left, up, right, down)
-    let validMoves = [
+    const validMoves = [
       squareIdBeingDragged - 1,
       squareIdBeingDragged - width,
       squareIdBeingDragged + 1,
       squareIdBeingDragged + width,
     ];
-    let validMove = validMoves.includes(squareIdBeingReplaced);
+
+    const validMove = validMoves.includes(squareIdBeingReplaced);
 
     if (squareIdBeingReplaced && validMove) {
-      squareIdBeingReplaced = null; // Move is valid, keep the swap
-    } else if (squareIdBeingReplaced && !validMove) {
-      // Invalid move, revert the swap
-      squares[squareIdBeingReplaced].style.backgroundImage = colorBeingReplaced;
-      squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
+      squareIdBeingReplaced = null; // Keep the valid swap
     } else {
-      // No drop occurred, revert to original
+      // Revert invalid or cancelled swap
+      squares[squareIdBeingReplaced].style.backgroundImage = colorBeingReplaced;
       squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
     }
   }
 
-  // Move Candies Down
+  // Move candies down to fill empty spaces
   function moveIntoSquareBelow() {
-    // Fill empty squares in the first row
+    // Top row - generate new candies
     for (let i = 0; i < width; i++) {
       if (squares[i].style.backgroundImage === "") {
-        let randomColor = Math.floor(Math.random() * candyColors.length);
+        const randomColor = Math.floor(Math.random() * candyColors.length);
         squares[i].style.backgroundImage = candyColors[randomColor];
       }
     }
-    // Move candies down to fill gaps
+
+    // Move existing candies down
     for (let i = 0; i < width * (width - 1); i++) {
       if (squares[i + width].style.backgroundImage === "") {
         squares[i + width].style.backgroundImage =
@@ -102,45 +129,21 @@ function candyCrushGame() {
       }
     }
   }
-  function dragEnd() {
-    // Define valid moves (adjacent squares: left, up, right, down)
-    let validMoves = [
-      squareIdBeingDragged - 1,
-      squareIdBeingDragged - width,
-      squareIdBeingDragged + 1,
-      squareIdBeingDragged + width,
-    ];
-    let validMove = validMoves.includes(squareIdBeingReplaced);
 
-    if (squareIdBeingReplaced && validMove) {
-      squareIdBeingReplaced = null; // Move is valid, keep the swap
-    } else if (squareIdBeingReplaced && !validMove) {
-      // Invalid move, revert the swap
-      squares[squareIdBeingReplaced].style.backgroundImage = colorBeingReplaced;
-      squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
-    } else {
-      // No drop occurred, revert to original
-      squares[squareIdBeingDragged].style.backgroundImage = colorBeingDragged;
-    }
-  }
-
-  // Move Candies Down
-  function moveIntoSquareBelow() {
-    // Fill empty squares in the first row
-    for (let i = 0; i < width; i++) {
-      if (squares[i].style.backgroundImage === "") {
-        let randomColor = Math.floor(Math.random() * candyColors.length);
-        squares[i].style.backgroundImage = candyColors[randomColor];
-      }
-    }
-    // Move candies down to fill gaps
-    for (let i = 0; i < width * (width - 1); i++) {
-      if (squares[i + width].style.backgroundImage === "") {
-        squares[i + width].style.backgroundImage =
-          squares[i].style.backgroundImage;
-        squares[i].style.backgroundImage = "";
+  // Match checking functions (unchanged logic, just using local images)
+  function checkRowForFour() {
+    for (let i = 0; i < 60; i++) {
+      if (i % width > width - 4) continue;
+      const row = [i, i + 1, i + 2, i + 3];
+      const color = squares[i].style.backgroundImage;
+      if (
+        color &&
+        row.every((idx) => squares[idx].style.backgroundImage === color)
+      ) {
+        score += 40;
+        scoreDisplay.innerHTML = score;
+        row.forEach((idx) => (squares[idx].style.backgroundImage = ""));
       }
     }
   }
 }
-
